@@ -1,7 +1,6 @@
 import urllib.request as urllib_request
 import bs4 as bs
 from datetime import datetime
-import os
 import json
 
 
