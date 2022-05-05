@@ -2,6 +2,7 @@ import urllib.request as urllib_request
 import bs4 as bs
 from datetime import datetime
 import json
+import re
 
 
 BASE_URL = "https://www.f1-fansite.com/"
@@ -107,9 +108,115 @@ def get_circuit_data():
     return circuit_dict
 
 
+def get_deaths_data():
+    deaths_dict = {}
+    deaths_page_url = BASE_URL + "f1-drivers/list-of-formula-1-drivers-that-died-racing/"
+    main_page_html = get_page_html(deaths_page_url)
+    soup = bs.BeautifulSoup(main_page_html, features="html.parser")
+    table_rows = soup.find("table").findAll("tr")
+    for i in range(1, len(table_rows)):
+        try:
+            driver = table_rows[i].findAll("td")[0].find("a").string
+        except AttributeError:
+            driver = table_rows[i].findAll("td")[0].string
+        driver_id = driver.lower().replace(" ", "_")
+        incident_date = table_rows[i].findAll("td")[1].string
+        try:
+            event = table_rows[i].findAll("td")[2].find("a").string
+        except AttributeError:
+            event = table_rows[i].findAll("td")[2].string
+        try:
+            circuit = table_rows[i].findAll("td")[3].find("a").string
+        except AttributeError:
+            circuit = table_rows[i].findAll("td")[3].string
+        car = table_rows[i].findAll("td")[4].string
+        session = table_rows[i].findAll("td")[5].string
+        cause = table_rows[i].findAll("td")[6].string
+        deaths_dict[driver_id] = {
+            "driver": driver,
+            "incident_date": incident_date,
+            "event": event,
+            "circuit": circuit,
+            "car": car,
+            "session": session,
+            "cause": cause
+        }
+
+    print(deaths_dict)
+    return deaths_dict
+
+
+def get_team_participation_data():
+    team_participation_dict = {}
+    # old page design
+    for year in range(F1_START_YEAR, 2013):
+        print(year)
+        team_participation_dict[year] = []
+        participation_page_url = BASE_URL + f'/f1-teams/{year}-f1-teams/'
+        participation_page_html = get_page_html(participation_page_url)
+        soup = bs.BeautifulSoup(participation_page_html, features="html.parser")
+        table_rows = soup.find("table").findAll("tr")
+        for i in range(1, len(table_rows)):
+            try:
+                participation_entry = {
+                    "no": table_rows[i].findAll("td")[0].string,
+                    "driver": table_rows[i].findAll("td")[1].findAll("a")[1].string,
+                    "team": table_rows[i].findAll("td")[2].find("a").string,
+                    "engine": table_rows[i].findAll("td")[3].string
+                }
+                team_participation_dict[year].append(participation_entry)
+            except IndexError:
+                continue
+
+    # page design since 2014
+    for year in range(2014, F1_CURRENT_YEAR):
+        print(year)
+        team_participation_dict[year] = []
+        participation_page_url = BASE_URL + f'/f1-teams/{year}-f1-teams/'
+        participation_page_html = get_page_html(participation_page_url)
+        soup = bs.BeautifulSoup(participation_page_html, features="html.parser")
+        table_rows = soup.find("table").findAll("tr", class_=False)
+        for i in range(1, len(table_rows)):
+            drivers_text = table_rows[i].findAll("td", recursive=False)[2].getText()\
+                .replace(".", "")\
+                .replace("1st driver", "")\
+                .replace("2nd driver", "")
+            drivers_text = re.sub(r' ?(\d+) ?', r'.\1.', drivers_text)
+            try:
+                team = table_rows[i].findAll("td", recursive=False)[0].findAll("a")[1].string
+            except IndexError:
+                team = table_rows[i].findAll("td", recursive=False)[0].find("a").string
+            try:
+                car = table_rows[i].findAll("td", recursive=False)[1].findAll("a")[1].string
+            except IndexError:
+                car = None
+            participation_entry = {
+                "team": team,
+                "car": car,
+                "drivers": [
+                    {
+                        "no": drivers_text.split(".")[1].strip(),
+                        "driver": drivers_text.split(".")[2].strip()
+                    },
+                    {
+                        "no": drivers_text.split(".")[3].strip(),
+                        "driver": drivers_text.split(".")[4].strip()
+                    }
+                ]
+            }
+            team_participation_dict[year].append(participation_entry)
+
+    print(team_participation_dict)
+    return team_participation_dict
+
+
 def get_f1_fansite_data(results_dir_path):
     grand_prix_dict = get_grand_prix_data()
     save_json_to_file(grand_prix_dict, results_dir_path + 'f1-fansite-grand-prix.json')
     circuit_dict = get_circuit_data()
     save_json_to_file(circuit_dict, results_dir_path + 'f1-fansite-circuit.json')
+    deaths_dict = get_deaths_data()
+    save_json_to_file(deaths_dict, results_dir_path + 'f1-fansite-deaths.json')
+    team_participation_dict = get_team_participation_data()
+    save_json_to_file(team_participation_dict, results_dir_path + 'f1-fansite-team-participations.json')
 
