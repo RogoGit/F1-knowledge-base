@@ -3,6 +3,7 @@ import bs4 as bs
 from datetime import datetime
 import dateutil.parser as dparser
 import json
+from sense_extractor import get_what_creation_is_about
 
 
 BASE_URL = "https://www.goodreads.com/"
@@ -81,7 +82,9 @@ def get_book_data(book_pages_list):
                 "reviews_num":  [int(s) for s in soup.find("meta", itemprop="reviewCount").parent.getText().split()
                                  if s.isdigit()][0],
                 "author": soup.find("div", class_="bookAuthorProfile__name").find("a").text.replace("\n", "").strip(),
-                "number_of_pages": pages_num
+                "number_of_pages": pages_num,
+                'isAbout': get_what_creation_is_about(soup.find("h1", id="bookTitle").text.replace("\n", "").strip(),
+                                                      description, None)
             }
         )
 

@@ -1,6 +1,7 @@
 import urllib.request as urllib_request
 import re
 import json
+from sense_extractor import get_what_creation_is_about
 
 
 API_KEY = ""
@@ -44,7 +45,8 @@ def parse_f1_movies(json_data):
             'contentRating': imdb_movie['contentRating'],
             'imDbRating': imdb_movie['imDbRating'],
             'imDbRatingVotes': imdb_movie['imDbRatingVotes'],
-            'metacriticRating': imdb_movie['metacriticRating']
+            'metacriticRating': imdb_movie['metacriticRating'],
+            'isAbout': get_what_creation_is_about(imdb_movie['title'], imdb_movie['plot'], imdb_movie['stars'])
         }
         movies_array.append(movie)
     return movies_array
