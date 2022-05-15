@@ -243,12 +243,6 @@ f1:author rdf:type owl:DatatypeProperty ;
           rdfs:range xsd:string .
 
 
-###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#avgScore
-f1:avgScore rdf:type owl:DatatypeProperty ;
-            rdfs:domain f1:RelatedCreation ;
-            rdfs:range xsd:double .
-
-
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#birthDate
 f1:birthDate rdf:type owl:DatatypeProperty ,
                       owl:FunctionalProperty ;
@@ -325,23 +319,16 @@ f1:deathCause rdf:type owl:DatatypeProperty ;
               rdfs:range xsd:string .
 
 
-###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#deathDate
-f1:deathDate rdf:type owl:DatatypeProperty ,
-                      owl:FunctionalProperty ;
-             rdfs:domain f1:Driver ;
-             rdfs:range xsd:date .
+###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#description
+f1:description rdf:type owl:DatatypeProperty ;
+               rdfs:domain f1:RelatedCreation ;
+               rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#dimensions
 f1:dimensions rdf:type owl:DatatypeProperty ;
               rdfs:domain f1:Car ;
               rdfs:range xsd:string .
-
-
-###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#director
-f1:director rdf:type owl:DatatypeProperty ;
-            rdfs:domain f1:Movie ;
-            rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#distance
@@ -400,6 +387,12 @@ f1:genre rdf:type owl:DatatypeProperty ;
          rdfs:range xsd:string .
 
 
+###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#goodreadsRating
+f1:goodreadsRating rdf:type owl:DatatypeProperty ;
+                   rdfs:domain f1:Book ;
+                   rdfs:range xsd:double .
+
+
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#grandPrixDate
 f1:grandPrixDate rdf:type owl:DatatypeProperty ;
                  rdfs:domain f1:GrandPrix ;
@@ -416,6 +409,12 @@ f1:grandPrixName rdf:type owl:DatatypeProperty ;
 f1:grid rdf:type owl:DatatypeProperty ;
         rdfs:domain f1:RaceResult ;
         rdfs:range xsd:positiveInteger .
+
+
+###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#imDbRating
+f1:imDbRating rdf:type owl:DatatypeProperty ;
+              rdfs:domain f1:Movie ;
+              rdfs:range xsd:double .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#lapDistance
@@ -435,6 +434,12 @@ f1:lastName rdf:type owl:DatatypeProperty ,
                      owl:FunctionalProperty ;
             rdfs:domain f1:Driver ;
             rdfs:range xsd:string .
+
+
+###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#metacriticRating
+f1:metacriticRating rdf:type owl:DatatypeProperty ;
+                    rdfs:domain f1:Movie ;
+                    rdfs:range xsd:nonNegativeInteger .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#movieDuration
@@ -475,9 +480,15 @@ f1:raceTime rdf:type owl:DatatypeProperty ;
             rdfs:range xsd:duration .
 
 
+###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#ratingsNum
+f1:ratingsNum rdf:type owl:DatatypeProperty ;
+              rdfs:domain f1:RelatedCreation ;
+              rdfs:range xsd:nonNegativeInteger .
+
+
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#reviewsNum
 f1:reviewsNum rdf:type owl:DatatypeProperty ;
-              rdfs:domain f1:RelatedCreation ;
+              rdfs:domain f1:Book ;
               rdfs:range xsd:nonNegativeInteger .
 
 

@@ -1,0 +1,717 @@
+@prefix f1: <https://github.com/RogoGit/F1-knowledge-base/f1-ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://github.com/RogoGit/F1-knowledge-base/f1-ontology> a owl:Ontology .
+
+f1:Q1Time a owl:DatatypeProperty ;
+    rdfs:domain f1:QualifyingResult ;
+    rdfs:range xsd:duration .
+
+f1:Q2Time a owl:DatatypeProperty ;
+    rdfs:domain f1:QualifyingResult ;
+    rdfs:range xsd:duration .
+
+f1:Q3Time a owl:DatatypeProperty ;
+    rdfs:domain f1:QualifyingResult ;
+    rdfs:range xsd:duration .
+
+f1:accidentDate a owl:DatatypeProperty ;
+    rdfs:domain f1:DeathAccident ;
+    rdfs:range xsd:date .
+
+f1:accidentSession a owl:DatatypeProperty ;
+    rdfs:domain f1:DeathAccident ;
+    rdfs:range xsd:string .
+
+f1:author a owl:DatatypeProperty ;
+    rdfs:domain f1:Book ;
+    rdfs:range xsd:string .
+
+f1:birthDate a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range xsd:date .
+
+f1:carDesigners a owl:DatatypeProperty ;
+    rdfs:domain f1:Car ;
+    rdfs:range xsd:string .
+
+f1:carModel a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:Car ;
+    rdfs:range xsd:string .
+
+f1:chassisDescription a owl:DatatypeProperty ;
+    rdfs:domain f1:Car ;
+    rdfs:range xsd:string .
+
+f1:circuitCountry a owl:DatatypeProperty ;
+    rdfs:domain f1:Circuit ;
+    rdfs:range xsd:string .
+
+f1:circuitLocationLat a owl:DatatypeProperty ;
+    rdfs:domain f1:Circuit ;
+    rdfs:range xsd:double .
+
+f1:circuitLocationLong a owl:DatatypeProperty ;
+    rdfs:domain f1:Circuit ;
+    rdfs:range xsd:double .
+
+f1:circuitName a owl:DatatypeProperty ;
+    rdfs:domain f1:Circuit ;
+    rdfs:range xsd:string .
+
+f1:circuitType a owl:DatatypeProperty ;
+    rdfs:domain f1:Circuit ;
+    rdfs:range xsd:string .
+
+f1:creationDate a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:RelatedCreation ;
+    rdfs:range xsd:date .
+
+f1:creationTitle a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:RelatedCreation ;
+    rdfs:range xsd:string .
+
+f1:deathCause a owl:DatatypeProperty ;
+    rdfs:domain f1:DeathAccident ;
+    rdfs:range xsd:string .
+
+f1:description a owl:DatatypeProperty ;
+    rdfs:domain f1:RelatedCreation ;
+    rdfs:range xsd:string .
+
+f1:dimensions a owl:DatatypeProperty ;
+    rdfs:domain f1:Car ;
+    rdfs:range xsd:string .
+
+f1:distance a owl:DatatypeProperty ;
+    rdfs:domain f1:Circuit ;
+    rdfs:range xsd:double .
+
+f1:driverCode a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range xsd:string .
+
+f1:driverNumber a owl:DatatypeProperty ;
+    rdfs:domain f1:GrandPrixResult ;
+    rdfs:range xsd:positiveInteger .
+
+f1:driverPosition a owl:DatatypeProperty ;
+    rdfs:domain f1:GrandPrixResult ;
+    rdfs:range xsd:positiveInteger .
+
+f1:drivingHasHappenedInSeason a owl:ObjectProperty ;
+    rdfs:domain f1:CarDriving ;
+    rdfs:range f1:Season .
+
+f1:engineDescription a owl:DatatypeProperty ;
+    rdfs:domain f1:Car ;
+    rdfs:range xsd:string .
+
+f1:finalStatus a owl:DatatypeProperty ;
+    rdfs:domain f1:RaceResult ;
+    rdfs:range xsd:string .
+
+f1:firstName a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range xsd:string .
+
+f1:foundYear a owl:DatatypeProperty ;
+    rdfs:domain f1:Team ;
+    rdfs:range xsd:positiveInteger .
+
+f1:genre a owl:DatatypeProperty ;
+    rdfs:domain f1:RelatedCreation ;
+    rdfs:range xsd:string .
+
+f1:goodreadsRating a owl:DatatypeProperty ;
+    rdfs:domain f1:Book ;
+    rdfs:range xsd:double .
+
+f1:grandPrixDate a owl:DatatypeProperty ;
+    rdfs:domain f1:GrandPrix ;
+    rdfs:range xsd:date .
+
+f1:grandPrixName a owl:DatatypeProperty ;
+    rdfs:domain f1:GrandPrix ;
+    rdfs:range xsd:string .
+
+f1:grandPrixResultIsRelatedTo a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:GrandPrixResult ;
+    rdfs:range f1:Driver ;
+    owl:inverseOf f1:hasDriverGrandPrixResult .
+
+f1:grid a owl:DatatypeProperty ;
+    rdfs:domain f1:RaceResult ;
+    rdfs:range xsd:positiveInteger .
+
+f1:hasCarDriving a owl:ObjectProperty ;
+    rdfs:domain f1:Car ;
+    rdfs:range f1:CarDriving .
+
+f1:hasConstructorStandingResult a owl:InverseFunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:Team ;
+    rdfs:range f1:ConstructorStanding ;
+    owl:inverseOf f1:seasonConstructorResultIsRelatedTo .
+
+f1:hasDiedIn a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range f1:DeathAccident .
+
+f1:hasDriver a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:TeamParticipation ;
+    rdfs:range f1:Driver .
+
+f1:hasDriverDriving a owl:ObjectProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range f1:CarDriving .
+
+f1:hasDriverParticipation a owl:ObjectProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range f1:TeamParticipation .
+
+f1:hasDriverStandingResult a owl:InverseFunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range f1:DriverStanding ;
+    owl:inverseOf f1:seasonDriverResultIsRelatedTo .
+
+f1:hasEverBeenATeammate a owl:ObjectProperty,
+        owl:SymmetricProperty,
+        owl:TransitiveProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range f1:Driver .
+
+f1:hasGrandPrixResult a owl:ObjectProperty ;
+    rdfs:domain f1:GrandPrix ;
+    rdfs:range f1:GrandPrixResult .
+
+f1:hasResult a owl:ObjectProperty ;
+    rdfs:domain f1:Season ;
+    rdfs:range f1:SeasonResult .
+
+f1:hasSeasonConstructorResult a owl:ObjectProperty ;
+    rdfs:domain f1:Team ;
+    rdfs:range f1:ConstructorStanding .
+
+f1:hasSeasonDriverResult a owl:ObjectProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range f1:DriverStanding .
+
+f1:hasTeam a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:TeamParticipation ;
+    rdfs:range f1:Team .
+
+f1:hasTeamParticipation a owl:ObjectProperty ;
+    rdfs:domain f1:Team ;
+    rdfs:range f1:TeamParticipation .
+
+f1:imDbRating a owl:DatatypeProperty ;
+    rdfs:domain f1:Movie ;
+    rdfs:range xsd:double .
+
+f1:inEvent a owl:ObjectProperty ;
+    rdfs:domain f1:DeathAccident ;
+    rdfs:range f1:GrandPrix .
+
+f1:isAbout a owl:ObjectProperty ;
+    rdfs:domain f1:RelatedCreation ;
+    rdfs:range f1:Car,
+        f1:Driver,
+        f1:GrandPrix,
+        f1:Season,
+        f1:Team .
+
+f1:isConstructedBy a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:Car ;
+    rdfs:range f1:Team ;
+    owl:inverseOf f1:isConstructorOf .
+
+f1:isHappendInSeason a owl:ObjectProperty ;
+    rdfs:domain f1:TeamParticipation ;
+    rdfs:range f1:Season .
+
+f1:isPartOf a owl:ObjectProperty ;
+    rdfs:domain f1:GrandPrix ;
+    rdfs:range f1:Season .
+
+f1:lapDistance a owl:DatatypeProperty ;
+    rdfs:domain f1:Circuit ;
+    rdfs:range xsd:double .
+
+f1:lapsCompleted a owl:DatatypeProperty ;
+    rdfs:domain f1:RaceResult ;
+    rdfs:range xsd:nonNegativeInteger .
+
+f1:lastName a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range xsd:string .
+
+f1:metacriticRating a owl:DatatypeProperty ;
+    rdfs:domain f1:Movie ;
+    rdfs:range xsd:nonNegativeInteger .
+
+f1:movieDuration a owl:DatatypeProperty ;
+    rdfs:domain f1:Movie ;
+    rdfs:range xsd:duration .
+
+f1:nationality a owl:DatatypeProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range xsd:string .
+
+f1:pages a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:Book ;
+    rdfs:range xsd:nonNegativeInteger .
+
+f1:permanentNumber a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range xsd:nonNegativeInteger .
+
+f1:points a owl:DatatypeProperty ;
+    rdfs:domain f1:RaceResult ;
+    rdfs:range xsd:nonNegativeInteger .
+
+f1:raceTime a owl:DatatypeProperty ;
+    rdfs:domain f1:RaceResult ;
+    rdfs:range xsd:duration .
+
+f1:ratingsNum a owl:DatatypeProperty ;
+    rdfs:domain f1:RelatedCreation ;
+    rdfs:range xsd:nonNegativeInteger .
+
+f1:reviewsNum a owl:DatatypeProperty ;
+    rdfs:domain f1:Book ;
+    rdfs:range xsd:nonNegativeInteger .
+
+f1:seasonRound a owl:DatatypeProperty ;
+    rdfs:domain f1:GrandPrix ;
+    rdfs:range xsd:positiveInteger .
+
+f1:seasonYear a owl:DatatypeProperty ;
+    rdfs:domain f1:Season ;
+    rdfs:range xsd:positiveInteger .
+
+f1:season_1950 a f1:Season ;
+    f1:seasonYear 1950 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1950_Formula_One_season"^^xsd:string .
+
+f1:season_1951 a f1:Season ;
+    f1:seasonYear 1951 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1951_Formula_One_season"^^xsd:string .
+
+f1:season_1952 a f1:Season ;
+    f1:seasonYear 1952 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1952_Formula_One_season"^^xsd:string .
+
+f1:season_1953 a f1:Season ;
+    f1:seasonYear 1953 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1953_Formula_One_season"^^xsd:string .
+
+f1:season_1954 a f1:Season ;
+    f1:seasonYear 1954 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1954_Formula_One_season"^^xsd:string .
+
+f1:season_1955 a f1:Season ;
+    f1:seasonYear 1955 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1955_Formula_One_season"^^xsd:string .
+
+f1:season_1956 a f1:Season ;
+    f1:seasonYear 1956 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1956_Formula_One_season"^^xsd:string .
+
+f1:season_1957 a f1:Season ;
+    f1:seasonYear 1957 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1957_Formula_One_season"^^xsd:string .
+
+f1:season_1958 a f1:Season ;
+    f1:seasonYear 1958 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1958_Formula_One_season"^^xsd:string .
+
+f1:season_1959 a f1:Season ;
+    f1:seasonYear 1959 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1959_Formula_One_season"^^xsd:string .
+
+f1:season_1960 a f1:Season ;
+    f1:seasonYear 1960 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1960_Formula_One_season"^^xsd:string .
+
+f1:season_1961 a f1:Season ;
+    f1:seasonYear 1961 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1961_Formula_One_season"^^xsd:string .
+
+f1:season_1962 a f1:Season ;
+    f1:seasonYear 1962 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1962_Formula_One_season"^^xsd:string .
+
+f1:season_1963 a f1:Season ;
+    f1:seasonYear 1963 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1963_Formula_One_season"^^xsd:string .
+
+f1:season_1964 a f1:Season ;
+    f1:seasonYear 1964 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1964_Formula_One_season"^^xsd:string .
+
+f1:season_1965 a f1:Season ;
+    f1:seasonYear 1965 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1965_Formula_One_season"^^xsd:string .
+
+f1:season_1966 a f1:Season ;
+    f1:seasonYear 1966 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1966_Formula_One_season"^^xsd:string .
+
+f1:season_1967 a f1:Season ;
+    f1:seasonYear 1967 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1967_Formula_One_season"^^xsd:string .
+
+f1:season_1968 a f1:Season ;
+    f1:seasonYear 1968 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1968_Formula_One_season"^^xsd:string .
+
+f1:season_1969 a f1:Season ;
+    f1:seasonYear 1969 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1969_Formula_One_season"^^xsd:string .
+
+f1:season_1970 a f1:Season ;
+    f1:seasonYear 1970 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1970_Formula_One_season"^^xsd:string .
+
+f1:season_1971 a f1:Season ;
+    f1:seasonYear 1971 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1971_Formula_One_season"^^xsd:string .
+
+f1:season_1972 a f1:Season ;
+    f1:seasonYear 1972 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1972_Formula_One_season"^^xsd:string .
+
+f1:season_1973 a f1:Season ;
+    f1:seasonYear 1973 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1973_Formula_One_season"^^xsd:string .
+
+f1:season_1974 a f1:Season ;
+    f1:seasonYear 1974 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1974_Formula_One_season"^^xsd:string .
+
+f1:season_1975 a f1:Season ;
+    f1:seasonYear 1975 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1975_Formula_One_season"^^xsd:string .
+
+f1:season_1976 a f1:Season ;
+    f1:seasonYear 1976 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1976_Formula_One_season"^^xsd:string .
+
+f1:season_1977 a f1:Season ;
+    f1:seasonYear 1977 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1977_Formula_One_season"^^xsd:string .
+
+f1:season_1978 a f1:Season ;
+    f1:seasonYear 1978 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1978_Formula_One_season"^^xsd:string .
+
+f1:season_1979 a f1:Season ;
+    f1:seasonYear 1979 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1979_Formula_One_season"^^xsd:string .
+
+f1:season_1980 a f1:Season ;
+    f1:seasonYear 1980 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1980_Formula_One_season"^^xsd:string .
+
+f1:season_1981 a f1:Season ;
+    f1:seasonYear 1981 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1981_Formula_One_season"^^xsd:string .
+
+f1:season_1982 a f1:Season ;
+    f1:seasonYear 1982 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1982_Formula_One_season"^^xsd:string .
+
+f1:season_1983 a f1:Season ;
+    f1:seasonYear 1983 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1983_Formula_One_season"^^xsd:string .
+
+f1:season_1984 a f1:Season ;
+    f1:seasonYear 1984 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1984_Formula_One_season"^^xsd:string .
+
+f1:season_1985 a f1:Season ;
+    f1:seasonYear 1985 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1985_Formula_One_season"^^xsd:string .
+
+f1:season_1986 a f1:Season ;
+    f1:seasonYear 1986 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1986_Formula_One_season"^^xsd:string .
+
+f1:season_1987 a f1:Season ;
+    f1:seasonYear 1987 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1987_Formula_One_season"^^xsd:string .
+
+f1:season_1988 a f1:Season ;
+    f1:seasonYear 1988 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1988_Formula_One_season"^^xsd:string .
+
+f1:season_1989 a f1:Season ;
+    f1:seasonYear 1989 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1989_Formula_One_season"^^xsd:string .
+
+f1:season_1990 a f1:Season ;
+    f1:seasonYear 1990 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1990_Formula_One_season"^^xsd:string .
+
+f1:season_1991 a f1:Season ;
+    f1:seasonYear 1991 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1991_Formula_One_season"^^xsd:string .
+
+f1:season_1992 a f1:Season ;
+    f1:seasonYear 1992 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1992_Formula_One_season"^^xsd:string .
+
+f1:season_1993 a f1:Season ;
+    f1:seasonYear 1993 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1993_Formula_One_season"^^xsd:string .
+
+f1:season_1994 a f1:Season ;
+    f1:seasonYear 1994 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1994_Formula_One_season"^^xsd:string .
+
+f1:season_1995 a f1:Season ;
+    f1:seasonYear 1995 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1995_Formula_One_season"^^xsd:string .
+
+f1:season_1996 a f1:Season ;
+    f1:seasonYear 1996 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1996_Formula_One_season"^^xsd:string .
+
+f1:season_1997 a f1:Season ;
+    f1:seasonYear 1997 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1997_Formula_One_season"^^xsd:string .
+
+f1:season_1998 a f1:Season ;
+    f1:seasonYear 1998 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1998_Formula_One_season"^^xsd:string .
+
+f1:season_1999 a f1:Season ;
+    f1:seasonYear 1999 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/1999_Formula_One_season"^^xsd:string .
+
+f1:season_2000 a f1:Season ;
+    f1:seasonYear 2000 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2000_Formula_One_season"^^xsd:string .
+
+f1:season_2001 a f1:Season ;
+    f1:seasonYear 2001 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2001_Formula_One_season"^^xsd:string .
+
+f1:season_2002 a f1:Season ;
+    f1:seasonYear 2002 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2002_Formula_One_season"^^xsd:string .
+
+f1:season_2003 a f1:Season ;
+    f1:seasonYear 2003 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2003_Formula_One_season"^^xsd:string .
+
+f1:season_2004 a f1:Season ;
+    f1:seasonYear 2004 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2004_Formula_One_season"^^xsd:string .
+
+f1:season_2005 a f1:Season ;
+    f1:seasonYear 2005 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2005_Formula_One_season"^^xsd:string .
+
+f1:season_2006 a f1:Season ;
+    f1:seasonYear 2006 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2006_Formula_One_season"^^xsd:string .
+
+f1:season_2007 a f1:Season ;
+    f1:seasonYear 2007 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2007_Formula_One_season"^^xsd:string .
+
+f1:season_2008 a f1:Season ;
+    f1:seasonYear 2008 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2008_Formula_One_season"^^xsd:string .
+
+f1:season_2009 a f1:Season ;
+    f1:seasonYear 2009 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2009_Formula_One_season"^^xsd:string .
+
+f1:season_2010 a f1:Season ;
+    f1:seasonYear 2010 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2010_Formula_One_season"^^xsd:string .
+
+f1:season_2011 a f1:Season ;
+    f1:seasonYear 2011 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2011_Formula_One_season"^^xsd:string .
+
+f1:season_2012 a f1:Season ;
+    f1:seasonYear 2012 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2012_Formula_One_season"^^xsd:string .
+
+f1:season_2013 a f1:Season ;
+    f1:seasonYear 2013 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2013_Formula_One_season"^^xsd:string .
+
+f1:season_2014 a f1:Season ;
+    f1:seasonYear 2014 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2014_Formula_One_season"^^xsd:string .
+
+f1:season_2015 a f1:Season ;
+    f1:seasonYear 2015 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2015_Formula_One_season"^^xsd:string .
+
+f1:season_2016 a f1:Season ;
+    f1:seasonYear 2016 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2016_Formula_One_season"^^xsd:string .
+
+f1:season_2017 a f1:Season ;
+    f1:seasonYear 2017 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2017_Formula_One_season"^^xsd:string .
+
+f1:season_2018 a f1:Season ;
+    f1:seasonYear 2018 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2018_Formula_One_World_Championship"^^xsd:string .
+
+f1:season_2019 a f1:Season ;
+    f1:seasonYear 2019 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2019_Formula_One_World_Championship"^^xsd:string .
+
+f1:season_2020 a f1:Season ;
+    f1:seasonYear 2020 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2020_Formula_One_World_Championship"^^xsd:string .
+
+f1:season_2021 a f1:Season ;
+    f1:seasonYear 2021 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2021_Formula_One_World_Championship"^^xsd:string .
+
+f1:season_2022 a f1:Season ;
+    f1:seasonYear 2022 ;
+    f1:wikipediaUrl "http://en.wikipedia.org/wiki/2022_Formula_One_World_Championship"^^xsd:string .
+
+f1:specifications a owl:DatatypeProperty ;
+    rdfs:domain f1:Car ;
+    rdfs:range xsd:string .
+
+f1:teamBasedIn a owl:DatatypeProperty ;
+    rdfs:domain f1:Team ;
+    rdfs:range xsd:string .
+
+f1:teamCountry a owl:DatatypeProperty ;
+    rdfs:domain f1:Team ;
+    rdfs:range xsd:string .
+
+f1:teamName a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain f1:Team ;
+    rdfs:range xsd:string .
+
+f1:tookPlaceIn a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:GrandPrix ;
+    rdfs:range f1:Circuit .
+
+f1:totalLaps a owl:DatatypeProperty ;
+    rdfs:domain f1:GrandPrix ;
+    rdfs:range xsd:positiveInteger .
+
+f1:totalPoints a owl:DatatypeProperty ;
+    rdfs:domain f1:SeasonResult ;
+    rdfs:range xsd:nonNegativeInteger .
+
+f1:totalPosition a owl:DatatypeProperty ;
+    rdfs:domain f1:SeasonResult ;
+    rdfs:range xsd:positiveInteger .
+
+f1:transmission a owl:DatatypeProperty ;
+    rdfs:domain f1:Car ;
+    rdfs:range xsd:string .
+
+f1:wikipediaUrl a owl:DatatypeProperty ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+f1:winsNum a owl:DatatypeProperty ;
+    rdfs:domain f1:SeasonResult ;
+    rdfs:range xsd:nonNegativeInteger .
+
+f1:hasDriverGrandPrixResult a owl:InverseFunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:Driver ;
+    rdfs:range f1:GrandPrixResult .
+
+f1:isConstructorOf a owl:InverseFunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:Team ;
+    rdfs:range f1:Car .
+
+f1:seasonConstructorResultIsRelatedTo a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:ConstructorStanding ;
+    rdfs:range f1:Team .
+
+f1:seasonDriverResultIsRelatedTo a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:domain f1:DriverStanding ;
+    rdfs:range f1:Driver .
+
+f1:ConstructorStanding a owl:Class ;
+    rdfs:subClassOf f1:SeasonResult .
+
+f1:DriverStanding a owl:Class ;
+    rdfs:subClassOf f1:SeasonResult .
+
+f1:Movie a owl:Class ;
+    rdfs:subClassOf f1:RelatedCreation .
+
+f1:QualifyingResult a owl:Class ;
+    rdfs:subClassOf f1:GrandPrixResult .
+
+xsd:date a rdfs:Datatype .
+
+f1:Book a owl:Class ;
+    rdfs:subClassOf f1:RelatedCreation .
+
+f1:CarDriving a owl:Class .
+
+xsd:duration a rdfs:Datatype .
+
+f1:RaceResult a owl:Class ;
+    rdfs:subClassOf f1:GrandPrixResult .
+
+f1:DeathAccident a owl:Class .
+
+f1:TeamParticipation a owl:Class .
+
+f1:SeasonResult a owl:Class .
+
+f1:GrandPrixResult a owl:Class .
+
+f1:Circuit a owl:Class .
+
+f1:RelatedCreation a owl:Class .
+
+f1:GrandPrix a owl:Class .
+
+f1:Car a owl:Class .
+
+f1:Team a owl:Class .
+
+f1:Driver a owl:Class .
+
+f1:Season a owl:Class .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( f1:Car f1:CarDriving f1:Circuit f1:DeathAccident f1:Driver f1:GrandPrix f1:GrandPrixResult f1:RelatedCreation f1:Season f1:SeasonResult f1:Team f1:TeamParticipation ) .
+
