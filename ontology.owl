@@ -378,7 +378,7 @@ f1:firstName rdf:type owl:DatatypeProperty ,
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#foundYear
 f1:foundYear rdf:type owl:DatatypeProperty ;
              rdfs:domain f1:Team ;
-             rdfs:range xsd:positiveInteger .
+             rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#genre

@@ -1,6 +1,8 @@
 from rdflib import URIRef, Literal, Graph
 from rdflib.namespace import RDF, XSD
 import json
+import datetime
+import re
 
 
 ONTOLOGY_IRI = "https://github.com/RogoGit/F1-knowledge-base/f1-ontology"
@@ -28,28 +30,28 @@ team_class = URIRef(f"{ONTOLOGY_IRI}#Team")
 team_participation_class = URIRef(f"{ONTOLOGY_IRI}#TeamParticipation")
 
 # Object properties
-drivingHasHappenedInSeason_op = URIRef(f"{ONTOLOGY_IRI}#drivingHasHappenedInSeason")
+drivingHasHappenedInSeason_op = URIRef(f"{ONTOLOGY_IRI}#drivingHasHappenedInSeason")    #
 grandPrixResultIsRelatedTo_op = URIRef(f"{ONTOLOGY_IRI}#grandPrixResultIsRelatedTo")
-hasCarDriving_op = URIRef(f"{ONTOLOGY_IRI}#hasCarDriving")
+hasCarDriving_op = URIRef(f"{ONTOLOGY_IRI}#hasCarDriving")  #
 hasConstructorStandingResult_op = URIRef(f"{ONTOLOGY_IRI}#hasConstructorStandingResult")
 hasDiedIn_op = URIRef(f"{ONTOLOGY_IRI}#hasDiedIn")
-hasDriver_op = URIRef(f"{ONTOLOGY_IRI}#hasDriver")
-hasDriverDriving_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverDriving")
+hasDriver_op = URIRef(f"{ONTOLOGY_IRI}#hasDriver")  #
+hasDriverDriving_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverDriving")    #
 hasDriverGrandPrixResult_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverGrandPrixResult")
-hasDriverParticipation_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverParticipation")
+hasDriverParticipation_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverParticipation")    #
 hasDriverStandingResult_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverStandingResult")
 hasEverBeenATeammate_op = URIRef(f"{ONTOLOGY_IRI}#hasDriver")
 hasGrandPrixResult_op = URIRef(f"{ONTOLOGY_IRI}#hasGrandPrixResult")
 hasResult_op = URIRef(f"{ONTOLOGY_IRI}#hasResult")
 hasSeasonConstructorResult_op = URIRef(f"{ONTOLOGY_IRI}#hasSeasonConstructorResult")
 hasSeasonDriverResult_op = URIRef(f"{ONTOLOGY_IRI}#hasSeasonDriverResult")
-hasTeam_op = URIRef(f"{ONTOLOGY_IRI}#hasTeam")
-hasTeamParticipation_op = URIRef(f"{ONTOLOGY_IRI}#hasTeamParticipation")
+hasTeam_op = URIRef(f"{ONTOLOGY_IRI}#hasTeam")  #
+hasTeamParticipation_op = URIRef(f"{ONTOLOGY_IRI}#hasTeamParticipation")    #
 inEvent_op = URIRef(f"{ONTOLOGY_IRI}#inEvent")
 isAbout_op = URIRef(f"{ONTOLOGY_IRI}#isAbout")
-isConstructedBy_op = URIRef(f"{ONTOLOGY_IRI}#isConstructedBy")
-isConstructorOf_op = URIRef(f"{ONTOLOGY_IRI}#isConstructorOf")
-isHappendInSeason_op = URIRef(f"{ONTOLOGY_IRI}#isHappendInSeason")
+isConstructedBy_op = URIRef(f"{ONTOLOGY_IRI}#isConstructedBy")  #
+isConstructorOf_op = URIRef(f"{ONTOLOGY_IRI}#isConstructorOf")  #
+isHappendInSeason_op = URIRef(f"{ONTOLOGY_IRI}#isHappendInSeason")  #
 isPartOf_op = URIRef(f"{ONTOLOGY_IRI}#isPartOf")
 seasonConstructorResultIsRelatedTo_op = URIRef(f"{ONTOLOGY_IRI}#seasonConstructorResultIsRelatedTo")
 seasonDriverResultIsRelatedTo_op = URIRef(f"{ONTOLOGY_IRI}#seasonDriverResultIsRelatedTo")
@@ -116,6 +118,74 @@ def load_json_from_file(file_path):
     return result
 
 
+def add_driver_individual(individual_id, driver_data):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, driver_class))
+    if driver_data["name"] and driver_data["name"].strip():
+        f1_graph.add((individual, firstName_dp, Literal(driver_data["name"], datatype=XSD.string)))
+    if driver_data["surname"] and driver_data["surname"].strip():
+        f1_graph.add((individual, lastName_dp, Literal(driver_data["surname"], datatype=XSD.string)))
+    if driver_data["birth_date"] and driver_data["birth_date"].strip():
+        f1_graph.add((individual, birthDate_dp,
+                      Literal(datetime.datetime.strptime(driver_data["birth_date"], "%d.%m.%Y").strftime("%Y-%m-%d"),
+                              datatype=XSD.date)))
+    if driver_data["nationality"] and driver_data["nationality"].strip():
+        f1_graph.add((individual, nationality_dp, Literal(driver_data["nationality"], datatype=XSD.string)))
+    if driver_data["permanent_number"] and driver_data["permanent_number"].strip():
+        f1_graph.add((individual, permanentNumber_dp, Literal(driver_data["permanent_number"], datatype=XSD.nonNegativeInteger)))
+    if driver_data["driver_code"] and driver_data["driver_code"].strip():
+        f1_graph.add((individual, driverCode_dp, Literal(driver_data["driver_code"], datatype=XSD.string)))
+    if driver_data["wikipedia_page_url"] and driver_data["wikipedia_page_url"].strip():
+        f1_graph.add((individual, wikipediaUrl_dp, Literal(driver_data["wikipedia_page_url"], datatype=XSD.string)))
+    return individual
+
+
+def add_team_individual(individual_id, team_data_ergast, team_data_technical):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, team_class))
+    if "name" in team_data_ergast and team_data_ergast["name"].strip():
+        f1_graph.add((individual, teamName_dp, Literal(team_data_ergast["name"], datatype=XSD.string)))
+    if "wikipedia_page_url" in team_data_ergast and team_data_ergast["wikipedia_page_url"].strip():
+        f1_graph.add((individual, wikipediaUrl_dp, Literal(team_data_ergast["wikipedia_page_url"], datatype=XSD.string)))
+    if "nationality" in team_data_ergast and team_data_ergast["nationality"].strip():
+        f1_graph.add((individual, teamCountry_dp, Literal(team_data_ergast["nationality"], datatype=XSD.string)))
+    if team_data_technical is not None and "founded" in team_data_technical and team_data_technical["founded"].strip():
+        f1_graph.add((individual, foundYear_dp, Literal(team_data_technical["founded"], datatype=XSD.string)))
+    if team_data_technical is not None and "based_in" in team_data_technical and team_data_technical["based_in"].strip():
+        f1_graph.add((individual, teamBasedIn_dp, Literal(team_data_technical["based_in"], datatype=XSD.string)))
+    return individual
+
+
+def add_car_individual(individual_id, car_data, teams_data):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, car_class))
+    if car_data["model"] and car_data["model"].strip():
+        f1_graph.add((individual, carModel_dp, Literal(car_data["model"], datatype=XSD.string)))
+    if "designer" in car_data and car_data["designer"].strip():
+        f1_graph.add((individual, carDesigners_dp, Literal(car_data["designer"], datatype=XSD.string)))
+    if "chassis" in car_data and car_data["chassis"].strip():
+        f1_graph.add((individual, chassisDescription_dp, Literal(car_data["chassis"], datatype=XSD.string)))
+    if "dimensions" in car_data and car_data["dimensions"].strip():
+        f1_graph.add((individual, dimensions_dp, Literal(car_data["dimensions"], datatype=XSD.string)))
+    if "engine" in car_data and car_data["engine"].strip():
+        f1_graph.add((individual, engineDescription_dp, Literal(car_data["engine"], datatype=XSD.string)))
+    if "specifications" in car_data and car_data["specifications"].strip():
+        f1_graph.add((individual, specifications_dp, Literal(car_data["specifications"], datatype=XSD.string)))
+    if "transmission" in car_data and car_data["transmission"].strip():
+        f1_graph.add((individual, transmission_dp, Literal(car_data["transmission"], datatype=XSD.string)))
+
+    # finding constructor
+    constructor_team_matching = next(iter([key for key, value in teams_data.items()
+                                           if key.lower() in car_data["team"].replace(' ', '_').lower()]), None)
+
+    if constructor_team_matching is not None:
+        team = URIRef(f"{ONTOLOGY_IRI}#team_{teams_data[constructor_team_matching]['name'].replace(' ', '_').lower()}")
+        f1_graph.add((individual, isConstructedBy_op, team))
+        f1_graph.add((team, isConstructorOf_op, individual))
+
+    return individual
+
+
 def add_season_individual(individual_id, year, wiki_url):
     individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
     f1_graph.add((individual, RDF.type, season_class))
@@ -124,12 +194,92 @@ def add_season_individual(individual_id, year, wiki_url):
     return individual
 
 
+def add_team_participation_individual(individual_id, year, participation_data):
+    driver_name = participation_data["driver"].replace(" ", "_").replace(";", "")\
+        .replace("(has_contract)", "").replace("(confirmed)", "").lower()
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, team_participation_class))
+    f1_graph.add((individual, isHappendInSeason_op, URIRef(f"{ONTOLOGY_IRI}#season_{year}")))
+    f1_graph.add((individual, hasDriver_op, URIRef(f'{ONTOLOGY_IRI}#driver_{driver_name}')))
+    f1_graph.add((individual, hasTeam_op,
+                  URIRef(f"{ONTOLOGY_IRI}#team_{participation_data['team'].replace(' ', '_').lower()}")))
+    f1_graph.add((URIRef(f'{ONTOLOGY_IRI}#driver_{driver_name}'), hasDriverParticipation_op, individual))
+    f1_graph.add((URIRef(f"{ONTOLOGY_IRI}#team_{participation_data['team'].replace(' ', '_').lower()}"),
+                  hasTeamParticipation_op, individual))
+    return individual
+
+
+def add_car_driving_individual(individual_id, year, car_data, driver_name):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, car_driving_class))
+    f1_graph.add((individual, drivingHasHappenedInSeason_op, URIRef(f"{ONTOLOGY_IRI}#season_{year}")))
+    car = URIRef(f"{ONTOLOGY_IRI}#car_{car_data['model'].replace(' ', '_').replace('(', '').replace(')', '').lower()}")
+    driver = URIRef(f"{ONTOLOGY_IRI}#driver_{driver_name}")
+    f1_graph.add((car, hasCarDriving_op, individual))
+    f1_graph.add((driver, hasDriverDriving_op, individual))
+    return individual
+
+
 def fill_f1_graph(ontology_path, data_format, f1_data_path, result_path):
     f1_graph.parse(ontology_path, format=data_format)
+
+    drivers_data_dict = load_json_from_file(f'{f1_data_path}/ergast-drivers.json')
+    for driver in drivers_data_dict:
+        add_driver_individual(f"driver_{drivers_data_dict[driver]['name'].replace(' ', '_').lower()}_"
+                              f"{drivers_data_dict[driver]['surname'].replace(' ', '_').lower()}",
+                              drivers_data_dict[driver])
+
+    teams_data_dict_ergast = load_json_from_file(f'{f1_data_path}/ergast-constructors.json')
+    teams_data_dict_technical = load_json_from_file(f'{f1_data_path}/f1-technical-teams.json')
+    for team in teams_data_dict_ergast:
+        f1_technical_match_team = next(iter([key for key, value in teams_data_dict_technical.items()
+                                   if teams_data_dict_ergast[team]["name"].replace(' ', '_').lower() in key.lower()]), None)
+
+        if f1_technical_match_team is not None:
+            team_key = teams_data_dict_technical[f1_technical_match_team]
+        else:
+            team_key = None
+
+        add_team_individual(f"team_{teams_data_dict_ergast[team]['name'].replace(' ', '_').lower()}",
+                            teams_data_dict_ergast[team], team_key)
+
+    cars_data_dict = load_json_from_file(f'{f1_data_path}/f1-technical-cars.json')
+    for car in cars_data_dict:
+        add_car_individual(f"car_{cars_data_dict[car]['model'].replace(' ', '_').replace('(', '').replace(')', '').lower()}",
+                           cars_data_dict[car], teams_data_dict_ergast)
+
     seasons_data_dict = load_json_from_file(f'{f1_data_path}/ergast-seasons.json')
     for season in seasons_data_dict:
         add_season_individual(f"season_{seasons_data_dict[season]['year']}",
                               int(seasons_data_dict[season]['year']), seasons_data_dict[season]['wikipedia_page_url'])
+
+    team_participation_data_dict = load_json_from_file(f'{f1_data_path}/f1-fansite-team-participations.json')
+    for season in team_participation_data_dict:
+        season_participations = team_participation_data_dict[season]
+        for participation in season_participations:
+            if int(season) <= 2013:
+                add_team_participation_individual(f"team_participation_{season}_{participation['driver'].replace(' ', '_').replace('(has_contract)', '').replace('(confirmed)', '').lower()}"
+                                                  f"_{participation['team'].replace(' ', '_').lower()}", season, participation)
+            else:
+                add_team_participation_individual(
+                    f"team_participation_{season}_{participation['drivers'][0]['driver'].replace(' ', '_').replace('(has_contract)', '').replace('(confirmed)', '').lower()}"
+                    f"_{participation['team'].replace(' ', '_').lower()}", season,
+                    {"driver": participation['drivers'][0]['driver'], "team": participation['team']})
+                add_team_participation_individual(
+                    f"team_participation_{season}_{participation['drivers'][1]['driver'].replace(' ', '_').replace('(has_contract)', '').replace('(confirmed)', '').lower()}"
+                    f"_{participation['team'].replace(' ', '_').lower()}", season,
+                    {"driver": participation['drivers'][1]['driver'], "team": participation['team']})
+
+    # car driving
+    for car in cars_data_dict:
+        if "years" in cars_data_dict[car]:
+            for year in cars_data_dict[car]["years"]:
+                if "drivers" in cars_data_dict[car]:
+                    for driver in re.split('[,/]', re.sub(r'\([^)]*\)', '', cars_data_dict[car]["drivers"])):
+                        driver_name = re.sub(r'\([^)]*\)', '', driver).strip().lower().replace(' ', '_')
+                        add_car_driving_individual(f"car_driving_{year}_{driver_name}_"
+                                                   f"{cars_data_dict[car]['model'].replace(' ', '_').replace('(', '').replace(')', '').lower()}",
+                                                   year, cars_data_dict[car], driver_name)
 
     f1_graph.serialize(destination=f'{result_path}/ontology-with-individuals.owl', format='turtle')
 
