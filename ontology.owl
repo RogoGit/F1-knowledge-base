@@ -275,6 +275,12 @@ f1:circuitCountry rdf:type owl:DatatypeProperty ;
                   rdfs:range xsd:string .
 
 
+###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#circuitLocality
+f1:circuitLocality rdf:type owl:DatatypeProperty ;
+                   rdfs:domain f1:Circuit ;
+                   rdfs:range xsd:string .
+
+
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#circuitLocationLat
 f1:circuitLocationLat rdf:type owl:DatatypeProperty ;
                       rdfs:domain f1:Circuit ;
@@ -333,7 +339,7 @@ f1:dimensions rdf:type owl:DatatypeProperty ;
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#distance
 f1:distance rdf:type owl:DatatypeProperty ;
-            rdfs:domain f1:Circuit ;
+            rdfs:domain f1:GrandPrix ;
             rdfs:range xsd:double .
 
 
@@ -420,7 +426,7 @@ f1:imDbRating rdf:type owl:DatatypeProperty ;
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#lapDistance
 f1:lapDistance rdf:type owl:DatatypeProperty ;
                rdfs:domain f1:Circuit ;
-               rdfs:range xsd:double .
+               rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#lapsCompleted
