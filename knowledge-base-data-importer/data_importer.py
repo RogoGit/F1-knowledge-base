@@ -354,6 +354,101 @@ def add_qualifying_result_individual(individual_id, result_data, grand_prix_name
     return individual
 
 
+def add_movie_individual(individual_id, movie_data):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, movie_class))
+    f1_graph.add((individual, creationTitle_dp, Literal(movie_data["title"], datatype=XSD.string)))
+    if "date" in movie_data and movie_data["date"] is not None and movie_data["date"].strip():
+        f1_graph.add((individual, creationDate_dp,
+                      Literal(datetime.datetime.strptime(movie_data["date"], "%Y").strftime("%Y"), datatype=XSD.date)))
+    if "genres" in movie_data and movie_data["genres"] is not None and movie_data["genres"].strip():
+        f1_graph.add((individual, genre_dp, Literal(movie_data["genres"], datatype=XSD.string)))
+    if "description" in movie_data and movie_data["description"] is not None and movie_data["description"].strip():
+        f1_graph.add((individual, description_dp, Literal(movie_data["description"], datatype=XSD.string)))
+    if "imDbRatingVotes" in movie_data and movie_data["imDbRatingVotes"] is not None and movie_data["imDbRatingVotes"].strip():
+        f1_graph.add((individual, ratingsNum_dp, Literal(movie_data["imDbRatingVotes"], datatype=XSD.nonNegativeInteger)))
+    if "imDbRating" in movie_data and movie_data["imDbRating"] is not None and movie_data["imDbRating"].strip():
+        f1_graph.add((individual, imDbRating_dp, Literal(movie_data["imDbRating"], datatype=XSD.double)))
+    if "metacriticRating" in movie_data and movie_data["metacriticRating"] is not None and movie_data["metacriticRating"].strip():
+        f1_graph.add((individual, metacriticRating_dp, Literal(movie_data["metacriticRating"], datatype=XSD.nonNegativeInteger)))
+    if "runtime" in movie_data and movie_data["runtime"] is not None and movie_data["runtime"].strip():
+        f1_graph.add((individual, movieDuration_dp, Literal(movie_data["runtime"], datatype=XSD.string)))
+    if "drivers" in movie_data["isAbout"]:
+        for driver in movie_data["isAbout"]["drivers"]:
+            f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#driver_{driver.replace(' ', '_').lower()}")))
+    if "seasons" in movie_data["isAbout"]:
+        for season in movie_data["isAbout"]["seasons"]:
+            f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#season_{season}")))
+    if "teams" in movie_data["isAbout"]:
+        for team in movie_data["isAbout"]["teams"]:
+            f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#team_{team.replace(' ', '_').lower()}")))
+    if "cars" in movie_data["isAbout"]:
+        for car in movie_data["isAbout"]["cars"]:
+            f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#car_{car.replace(' ', '_').lower()}")))
+    if "grand_prixes" in movie_data["isAbout"]:
+        for grand_prix in movie_data["isAbout"]["grand_prixes"]:
+            try:
+                f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#grand_prix"
+                                                             f"_{movie_data['isAbout']['seasons'][-1]}"
+                                                             f"_{grand_prix.replace(' ', '_').lower()}")))
+            except KeyError:
+                continue
+    return individual
+
+
+def add_book_individual(individual_id, book_data):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, book_class))
+    f1_graph.add((individual, creationTitle_dp, Literal(book_data["title"], datatype=XSD.string)))
+    if "date" in book_data and book_data["date"] is not None and book_data["date"].strip():
+        f1_graph.add((individual, creationDate_dp,
+                      Literal(datetime.datetime.strptime(book_data["date"], "%d.%m.%Y").strftime("%Y-%m-%d"),
+                              datatype=XSD.date)))
+    if "genres" in book_data and book_data["genres"] is not None and len(book_data["genres"]) > 0:
+        f1_graph.add((individual, genre_dp, Literal(', '.join(genre for genre in book_data["genres"]), datatype=XSD.string)))
+    if "description" in book_data and book_data["description"] is not None and book_data["description"].strip():
+        f1_graph.add((individual, description_dp, Literal(book_data["description"], datatype=XSD.string)))
+    if "ratings_num" in book_data and book_data["ratings_num"] is not None:
+        f1_graph.add((individual, ratingsNum_dp, Literal(book_data["ratings_num"], datatype=XSD.nonNegativeInteger)))
+    if "reviews_num" in book_data and book_data["reviews_num"] is not None:
+        f1_graph.add((individual, reviewsNum_dp, Literal(book_data["reviews_num"], datatype=XSD.nonNegativeInteger)))
+    if "number_of_pages" in book_data and book_data["number_of_pages"] is not None and book_data["number_of_pages"].strip():
+        f1_graph.add((individual, pages_dp, Literal(book_data["number_of_pages"], datatype=XSD.nonNegativeInteger)))
+    if "author" in book_data and book_data["author"] is not None and book_data["author"].strip():
+        f1_graph.add((individual, author_dp, Literal(book_data["author"], datatype=XSD.string)))
+    if "rating" in book_data and book_data["rating"] is not None and book_data["rating"].strip():
+        f1_graph.add((individual, goodreadsRating_dp, Literal(book_data["rating"], datatype=XSD.double)))
+
+    description = book_data["description"] if book_data["description"] is not None else None
+
+    if "drivers" in book_data["isAbout"]:
+        for driver in book_data["isAbout"]["drivers"]:
+            f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#driver_{driver.replace(' ', '_').lower()}")))
+    if "seasons" in book_data["isAbout"]:
+        for season in book_data["isAbout"]["seasons"]:
+            f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#season_{season}")))
+    if "teams" in book_data["isAbout"]:
+        for team in book_data["isAbout"]["teams"]:
+            f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#team_{team.replace(' ', '_').lower()}")))
+    if "cars" in book_data["isAbout"]:
+        for car in book_data["isAbout"]["cars"]:
+            f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#car_{car.replace(' ', '_').lower()}")))
+    if "grand_prixes" in book_data["isAbout"] and "seasons" in book_data["isAbout"]:
+        for grand_prix in book_data["isAbout"]["grand_prixes"]:
+            if len(book_data["isAbout"]["seasons"]) == 1:
+                f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#grand_prix"
+                                                             f"_{book_data['isAbout']['seasons'][0]}"
+                                                             f"_{grand_prix.replace(' ', '_').lower()}")))
+            else:
+                for season in book_data["isAbout"]["seasons"]:
+                    if f'{season} {grand_prix}' in description or f'{grand_prix} in {season}' in description or\
+                            f'{grand_prix} {season}' in description:
+                        f1_graph.add((individual, isAbout_op, URIRef(f"{ONTOLOGY_IRI}#grand_prix"
+                                                                     f"_{season}"
+                                                                     f"_{grand_prix.replace(' ', '_').lower()}")))
+    return individual
+
+
 def fill_f1_graph(ontology_path, data_format, f1_data_path, result_path):
     f1_graph.parse(ontology_path, format=data_format)
 
@@ -470,6 +565,14 @@ def fill_f1_graph(ontology_path, data_format, f1_data_path, result_path):
             add_qualifying_result_individual(f"qualifying_result_{grand_prix_results_key}_{qualifying_result['ergast_driver_id']}",
                                              qualifying_result, grand_prix_results_key,
                                              drivers_data_dict[qualifying_result['ergast_driver_id']])
+
+    movies_data = load_json_from_file(f'{f1_data_path}/f1-movies.json')
+    for movie in movies_data:
+        add_movie_individual(f"movie_{movie['title'].replace(' ', '_').replace('(', '').replace(')', '').lower()}", movie)
+
+    books_data = load_json_from_file(f'{f1_data_path}/f1-books.json')
+    for book in books_data:
+        add_book_individual(f"book_{book['title'].replace(' ', '_').replace('(', '').replace(')', '').lower()}", book)
 
     f1_graph.serialize(destination=f'{result_path}/ontology-with-individuals.owl', format='turtle')
 
