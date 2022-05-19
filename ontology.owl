@@ -114,18 +114,6 @@ f1:hasResult rdf:type owl:ObjectProperty ;
              rdfs:range f1:SeasonResult .
 
 
-###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#hasSeasonConstructorResult
-f1:hasSeasonConstructorResult rdf:type owl:ObjectProperty ;
-                              rdfs:domain f1:Team ;
-                              rdfs:range f1:ConstructorStanding .
-
-
-###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#hasSeasonDriverResult
-f1:hasSeasonDriverResult rdf:type owl:ObjectProperty ;
-                         rdfs:domain f1:Driver ;
-                         rdfs:range f1:DriverStanding .
-
-
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#hasTeam
 f1:hasTeam rdf:type owl:ObjectProperty ,
                     owl:FunctionalProperty ;
@@ -210,19 +198,19 @@ f1:tookPlaceIn rdf:type owl:ObjectProperty ,
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#Q1Time
 f1:Q1Time rdf:type owl:DatatypeProperty ;
           rdfs:domain f1:QualifyingResult ;
-          rdfs:range xsd:duration .
+          rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#Q2Time
 f1:Q2Time rdf:type owl:DatatypeProperty ;
           rdfs:domain f1:QualifyingResult ;
-          rdfs:range xsd:duration .
+          rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#Q3Time
 f1:Q3Time rdf:type owl:DatatypeProperty ;
           rdfs:domain f1:QualifyingResult ;
-          rdfs:range xsd:duration .
+          rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#accidentDate
@@ -340,7 +328,7 @@ f1:dimensions rdf:type owl:DatatypeProperty ;
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#distance
 f1:distance rdf:type owl:DatatypeProperty ;
             rdfs:domain f1:GrandPrix ;
-            rdfs:range xsd:double .
+            rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#driverCode
@@ -451,7 +439,7 @@ f1:metacriticRating rdf:type owl:DatatypeProperty ;
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#movieDuration
 f1:movieDuration rdf:type owl:DatatypeProperty ;
                  rdfs:domain f1:Movie ;
-                 rdfs:range xsd:duration .
+                 rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#nationality
@@ -483,7 +471,7 @@ f1:points rdf:type owl:DatatypeProperty ;
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#raceTime
 f1:raceTime rdf:type owl:DatatypeProperty ;
             rdfs:domain f1:RaceResult ;
-            rdfs:range xsd:duration .
+            rdfs:range xsd:string .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#ratingsNum

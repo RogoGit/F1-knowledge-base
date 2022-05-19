@@ -31,31 +31,29 @@ team_participation_class = URIRef(f"{ONTOLOGY_IRI}#TeamParticipation")
 
 # Object properties
 drivingHasHappenedInSeason_op = URIRef(f"{ONTOLOGY_IRI}#drivingHasHappenedInSeason")    #
-grandPrixResultIsRelatedTo_op = URIRef(f"{ONTOLOGY_IRI}#grandPrixResultIsRelatedTo")
+grandPrixResultIsRelatedTo_op = URIRef(f"{ONTOLOGY_IRI}#grandPrixResultIsRelatedTo")    #
 hasCarDriving_op = URIRef(f"{ONTOLOGY_IRI}#hasCarDriving")  #
 hasConstructorStandingResult_op = URIRef(f"{ONTOLOGY_IRI}#hasConstructorStandingResult")    #
-hasDiedIn_op = URIRef(f"{ONTOLOGY_IRI}#hasDiedIn")
+hasDiedIn_op = URIRef(f"{ONTOLOGY_IRI}#hasDiedIn")  #
 hasDriver_op = URIRef(f"{ONTOLOGY_IRI}#hasDriver")  #
 hasDriverDriving_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverDriving")    #
-hasDriverGrandPrixResult_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverGrandPrixResult")
+hasDriverGrandPrixResult_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverGrandPrixResult")    #
 hasDriverParticipation_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverParticipation")    #
-hasDriverStandingResult_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverStandingResult")
-hasEverBeenATeammate_op = URIRef(f"{ONTOLOGY_IRI}#hasDriver")
-hasGrandPrixResult_op = URIRef(f"{ONTOLOGY_IRI}#hasGrandPrixResult")
+hasDriverStandingResult_op = URIRef(f"{ONTOLOGY_IRI}#hasDriverStandingResult")  #
+hasEverBeenATeammate_op = URIRef(f"{ONTOLOGY_IRI}#hasEverBeenATeammate")
+hasGrandPrixResult_op = URIRef(f"{ONTOLOGY_IRI}#hasGrandPrixResult")    #
 hasResult_op = URIRef(f"{ONTOLOGY_IRI}#hasResult")  #
-hasSeasonConstructorResult_op = URIRef(f"{ONTOLOGY_IRI}#hasSeasonConstructorResult")
-hasSeasonDriverResult_op = URIRef(f"{ONTOLOGY_IRI}#hasSeasonDriverResult")  #
 hasTeam_op = URIRef(f"{ONTOLOGY_IRI}#hasTeam")  #
 hasTeamParticipation_op = URIRef(f"{ONTOLOGY_IRI}#hasTeamParticipation")    #
-inEvent_op = URIRef(f"{ONTOLOGY_IRI}#inEvent")
+inEvent_op = URIRef(f"{ONTOLOGY_IRI}#inEvent")  #
 isAbout_op = URIRef(f"{ONTOLOGY_IRI}#isAbout")
 isConstructedBy_op = URIRef(f"{ONTOLOGY_IRI}#isConstructedBy")  #
 isConstructorOf_op = URIRef(f"{ONTOLOGY_IRI}#isConstructorOf")  #
 isHappendInSeason_op = URIRef(f"{ONTOLOGY_IRI}#isHappendInSeason")  #
-isPartOf_op = URIRef(f"{ONTOLOGY_IRI}#isPartOf")
+isPartOf_op = URIRef(f"{ONTOLOGY_IRI}#isPartOf")    #
 seasonConstructorResultIsRelatedTo_op = URIRef(f"{ONTOLOGY_IRI}#seasonConstructorResultIsRelatedTo")    #
 seasonDriverResultIsRelatedTo_op = URIRef(f"{ONTOLOGY_IRI}#seasonDriverResultIsRelatedTo")  #
-tookPlaceIn_op = URIRef(f"{ONTOLOGY_IRI}#tookPlaceIn")
+tookPlaceIn_op = URIRef(f"{ONTOLOGY_IRI}#tookPlaceIn")  #
 
 # Data properties
 wikipediaUrl_dp = URIRef(f"{ONTOLOGY_IRI}#wikipediaUrl")
@@ -118,6 +116,19 @@ circuitLocationLat_dp = URIRef(f"{ONTOLOGY_IRI}#circuitLocationLat")
 circuitLocationLong_dp = URIRef(f"{ONTOLOGY_IRI}#circuitLocationLong")
 circuitType_dp = URIRef(f"{ONTOLOGY_IRI}#circuitType")
 lapDistance_dp = URIRef(f"{ONTOLOGY_IRI}#lapDistance")
+# Grand Prix results (ergast)
+driverNumber_dp = URIRef(f"{ONTOLOGY_IRI}#driverNumber")
+driverPosition_dp = URIRef(f"{ONTOLOGY_IRI}#driverPosition")
+# Race results (ergast)
+points_dp = URIRef(f"{ONTOLOGY_IRI}#points")
+raceTime_dp = URIRef(f"{ONTOLOGY_IRI}#raceTime")
+finalStatus_dp = URIRef(f"{ONTOLOGY_IRI}#finalStatus")
+grid_dp = URIRef(f"{ONTOLOGY_IRI}#grid")
+lapsCompleted_dp = URIRef(f"{ONTOLOGY_IRI}#lapsCompleted")
+# Qualifying result (ergast)
+Q1Time_dp = URIRef(f"{ONTOLOGY_IRI}#Q1Time")
+Q2Time_dp = URIRef(f"{ONTOLOGY_IRI}#Q2Time")
+Q3Time_dp = URIRef(f"{ONTOLOGY_IRI}#Q3Time")
 
 
 def load_json_from_file(file_path):
@@ -239,7 +250,7 @@ def add_driver_standing_individual(individual_id, year, season_result, driver_da
     driver = URIRef(f"{ONTOLOGY_IRI}#driver_{driver_data['name'].replace(' ', '_').lower()}"
                     f"_{driver_data['surname'].replace(' ', '_').lower()}")
     f1_graph.add((individual, seasonDriverResultIsRelatedTo_op, driver))
-    f1_graph.add((driver, hasSeasonDriverResult_op, individual))
+    f1_graph.add((driver, hasDriverStandingResult_op, individual))
     return individual
 
 
@@ -268,6 +279,78 @@ def add_circuit_individual(individual_id, circuit_data_ergast, circuit_data_fans
     if circuit_data_fansite is not None:
         f1_graph.add((individual, circuitType_dp, Literal(circuit_data_fansite["type"], datatype=XSD.string)))
         f1_graph.add((individual, lapDistance_dp, Literal(circuit_data_fansite["lap_dist_km"], datatype=XSD.string)))
+    return individual
+
+
+def add_grand_prix_individual(individual_id, grand_prix_data_ergast, grand_prix_data_fansite):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, grand_prix_class))
+    f1_graph.add((individual, grandPrixName_dp, Literal(grand_prix_data_ergast["name"], datatype=XSD.string)))
+    f1_graph.add((individual, grandPrixDate_dp,
+                  Literal(datetime.datetime.strptime(grand_prix_data_ergast["date"], "%d.%m.%Y").strftime("%Y-%m-%d"), datatype=XSD.date)))
+    f1_graph.add((individual, seasonRound_dp, Literal(grand_prix_data_ergast["round"], datatype=XSD.positiveInteger)))
+    f1_graph.add((individual, wikipediaUrl_dp, Literal(grand_prix_data_ergast["wikipedia_page_url"], datatype=XSD.string)))
+    if grand_prix_data_fansite is not None:
+        f1_graph.add((individual, totalLaps_dp, Literal(grand_prix_data_fansite["total_laps"], datatype=XSD.positiveInteger)))
+        f1_graph.add((individual, distance_dp, Literal(grand_prix_data_fansite["distance_km"], datatype=XSD.string)))
+    season = URIRef(f"{ONTOLOGY_IRI}#season_{grand_prix_data_ergast['season']}")
+    circuit = URIRef(f"{ONTOLOGY_IRI}#circuit_{grand_prix_data_ergast['ergast_circuit_id'].replace(' ', '_').lower()}")
+    f1_graph.add((individual, isPartOf_op, season))
+    f1_graph.add((individual, tookPlaceIn_op, circuit))
+    return individual
+
+
+def add_death_accident_individual(individual_id, accident_data):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, death_accident_class))
+    f1_graph.add((individual, accidentDate_dp,
+                  Literal(datetime.datetime.strptime(accident_data["incident_date"], "%b %d, %Y").strftime("%Y-%m-%d"),
+                          datatype=XSD.date)))
+    f1_graph.add((individual, deathCause_dp, Literal(accident_data["cause"], datatype=XSD.string)))
+    f1_graph.add((individual, accidentSession_dp, Literal(accident_data["session"], datatype=XSD.string)))
+    driver = URIRef(f"{ONTOLOGY_IRI}#driver_{accident_data['driver'].replace(' ', '_').lower()}")
+    grand_prix = URIRef(f"{ONTOLOGY_IRI}#grand_prix_{accident_data['incident_date'].split(',')[1].strip()}"
+                        f"_{accident_data['event'].replace(' F1', '').replace('GP', 'grand_prix').replace(' ','_').lower()}")
+    f1_graph.add((driver, hasDiedIn_op, individual))
+    f1_graph.add((individual, inEvent_op, grand_prix))
+    return individual
+
+
+def add_race_result_individual(individual_id, result_data, grand_prix_name, driver_data):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, race_result_class))
+    f1_graph.add((individual, driverNumber_dp, Literal(result_data["number"], datatype=XSD.positiveInteger)))
+    f1_graph.add((individual, driverPosition_dp, Literal(result_data["position"], datatype=XSD.positiveInteger)))
+    f1_graph.add((individual, points_dp, Literal(result_data["points"], datatype=XSD.nonNegativeInteger)))
+    if "time" in result_data and result_data["time"].strip():
+        f1_graph.add((individual, raceTime_dp, Literal(result_data["time"], datatype=XSD.string)))
+    f1_graph.add((individual, finalStatus_dp, Literal(result_data["status"], datatype=XSD.string)))
+    f1_graph.add((individual, grid_dp, Literal(result_data["grid"], datatype=XSD.positiveInteger)))
+    f1_graph.add((individual, lapsCompleted_dp, Literal(result_data["laps"], datatype=XSD.nonNegativeInteger)))
+    f1_graph.add((URIRef(f"{ONTOLOGY_IRI}#grand_prix_{grand_prix_name}"), hasGrandPrixResult_op, individual))
+    driver = URIRef(f"{ONTOLOGY_IRI}#driver_{driver_data['name'].replace(' ', '_').lower()}"
+                    f"_{driver_data['surname'].replace(' ', '_').lower()}")
+    f1_graph.add((driver, hasDriverGrandPrixResult_op, individual))
+    f1_graph.add((individual, grandPrixResultIsRelatedTo_op, driver))
+    return individual
+
+
+def add_qualifying_result_individual(individual_id, result_data, grand_prix_name, driver_data):
+    individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
+    f1_graph.add((individual, RDF.type, qualifying_result_class))
+    f1_graph.add((individual, driverNumber_dp, Literal(result_data["number"], datatype=XSD.positiveInteger)))
+    f1_graph.add((individual, driverPosition_dp, Literal(result_data["position"], datatype=XSD.positiveInteger)))
+    if "Q1" in result_data and result_data["Q1"].strip():
+        f1_graph.add((individual, Q1Time_dp, Literal(result_data["Q1"], datatype=XSD.string)))
+    if "Q2" in result_data and result_data["Q2"].strip():
+        f1_graph.add((individual, Q2Time_dp, Literal(result_data["Q2"], datatype=XSD.string)))
+    if "Q3" in result_data and result_data["Q3"].strip():
+        f1_graph.add((individual, Q3Time_dp, Literal(result_data["Q3"], datatype=XSD.string)))
+    f1_graph.add((URIRef(f"{ONTOLOGY_IRI}#grand_prix_{grand_prix_name}"), hasGrandPrixResult_op, individual))
+    driver = URIRef(f"{ONTOLOGY_IRI}#driver_{driver_data['name'].replace(' ', '_').lower()}"
+                    f"_{driver_data['surname'].replace(' ', '_').lower()}")
+    f1_graph.add((driver, hasDriverGrandPrixResult_op, individual))
+    f1_graph.add((individual, grandPrixResultIsRelatedTo_op, driver))
     return individual
 
 
@@ -356,10 +439,37 @@ def fill_f1_graph(ontology_path, data_format, f1_data_path, result_path):
             fansite_data = circuits_data_dict_fansite[fansite_matching_circuit]
         else:
             fansite_data = None
-        add_circuit_individual(f"circuit_{circuits_data_dict_ergast[circuit]['name'].replace(' ', '_').lower()}",
+        add_circuit_individual(f"circuit_{circuit.replace(' ', '_').lower()}",
                                circuits_data_dict_ergast[circuit], fansite_data)
 
+    grand_prix_data_dict_ergast = load_json_from_file(f'{f1_data_path}/ergast-races.json')
+    grand_prix_data_dict_fansite = load_json_from_file(f'{f1_data_path}/f1-fansite-grand-prix.json')
+    for grand_prix in grand_prix_data_dict_ergast:
+        fansite_matching_grand_prix = next(iter([key for key, value in grand_prix_data_dict_fansite.items()
+                                                 if key in grand_prix]), None)
+        if fansite_matching_grand_prix is not None:
+            fansite_data = grand_prix_data_dict_fansite[fansite_matching_grand_prix]
+        else:
+            fansite_data = None
+        add_grand_prix_individual(f"grand_prix_{grand_prix}", grand_prix_data_dict_ergast[grand_prix], fansite_data)
+
     death_accidents_data_dict = load_json_from_file(f'{f1_data_path}/f1-fansite-deaths.json')
+    for death in death_accidents_data_dict:
+        add_death_accident_individual(f"death_accident_{death_accidents_data_dict[death]['driver'].replace(' ', '_').lower()}",
+                                      death_accidents_data_dict[death])
+
+    race_results_data_dict = load_json_from_file(f'{f1_data_path}/ergast-results.json')
+    for grand_prix_results_key in race_results_data_dict:
+        for race_result in race_results_data_dict[grand_prix_results_key]:
+            add_race_result_individual(f"race_result_{grand_prix_results_key}_{race_result['ergast_driver_id']}",
+                                       race_result, grand_prix_results_key, drivers_data_dict[race_result['ergast_driver_id']])
+
+    qualifying_results_data_dict = load_json_from_file(f'{f1_data_path}/ergast-qualifying.json')
+    for grand_prix_results_key in qualifying_results_data_dict:
+        for qualifying_result in qualifying_results_data_dict[grand_prix_results_key]:
+            add_qualifying_result_individual(f"qualifying_result_{grand_prix_results_key}_{qualifying_result['ergast_driver_id']}",
+                                             qualifying_result, grand_prix_results_key,
+                                             drivers_data_dict[qualifying_result['ergast_driver_id']])
 
     f1_graph.serialize(destination=f'{result_path}/ontology-with-individuals.owl', format='turtle')
 
