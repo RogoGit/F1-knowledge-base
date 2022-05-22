@@ -574,5 +574,5 @@ def fill_f1_graph(ontology_path, data_format, f1_data_path, result_path):
     for book in books_data:
         add_book_individual(f"book_{book['title'].replace(' ', '_').replace('(', '').replace(')', '').lower()}", book)
 
-    f1_graph.serialize(destination=f'{result_path}/ontology-with-individuals.owl', format='turtle')
+    f1_graph.serialize(destination=result_path, format=data_format)
 
