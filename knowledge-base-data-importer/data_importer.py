@@ -243,7 +243,7 @@ def add_car_driving_individual(individual_id, year, car_data, driver_name):
 def add_driver_standing_individual(individual_id, year, season_result, driver_data):
     individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
     f1_graph.add((individual, RDF.type, driver_standing_class))
-    f1_graph.add((individual, totalPoints_dp,  Literal(season_result["points"], datatype=XSD.nonNegativeInteger)))
+    f1_graph.add((individual, totalPoints_dp,  Literal(season_result["points"], datatype=XSD.double)))
     f1_graph.add((individual, totalPosition_dp, Literal(season_result["position"], datatype=XSD.positiveInteger)))
     f1_graph.add((individual, winsNum_dp,  Literal(season_result["wins"], datatype=XSD.nonNegativeInteger)))
     f1_graph.add((URIRef(f"{ONTOLOGY_IRI}#season_{year}"), hasResult_op, individual))
@@ -257,7 +257,7 @@ def add_driver_standing_individual(individual_id, year, season_result, driver_da
 def add_constructor_standing_individual(individual_id, year, season_result, constructor_data):
     individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
     f1_graph.add((individual, RDF.type, constructor_standing_class))
-    f1_graph.add((individual, totalPoints_dp,  Literal(season_result["points"], datatype=XSD.nonNegativeInteger)))
+    f1_graph.add((individual, totalPoints_dp,  Literal(season_result["points"], datatype=XSD.double)))
     f1_graph.add((individual, totalPosition_dp, Literal(season_result["position"], datatype=XSD.positiveInteger)))
     f1_graph.add((individual, winsNum_dp,  Literal(season_result["wins"], datatype=XSD.nonNegativeInteger)))
     f1_graph.add((URIRef(f"{ONTOLOGY_IRI}#season_{year}"), hasResult_op, individual))
@@ -319,13 +319,14 @@ def add_death_accident_individual(individual_id, accident_data):
 def add_race_result_individual(individual_id, result_data, grand_prix_name, driver_data):
     individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
     f1_graph.add((individual, RDF.type, race_result_class))
-    f1_graph.add((individual, driverNumber_dp, Literal(result_data["number"], datatype=XSD.positiveInteger)))
+    if "number" in result_data and result_data["number"].strip():
+        f1_graph.add((individual, driverNumber_dp, Literal(result_data["number"], datatype=XSD.nonNegativeInteger)))
     f1_graph.add((individual, driverPosition_dp, Literal(result_data["position"], datatype=XSD.positiveInteger)))
-    f1_graph.add((individual, points_dp, Literal(result_data["points"], datatype=XSD.nonNegativeInteger)))
+    f1_graph.add((individual, points_dp, Literal(result_data["points"], datatype=XSD.double)))
     if "time" in result_data and result_data["time"].strip():
         f1_graph.add((individual, raceTime_dp, Literal(result_data["time"], datatype=XSD.string)))
     f1_graph.add((individual, finalStatus_dp, Literal(result_data["status"], datatype=XSD.string)))
-    f1_graph.add((individual, grid_dp, Literal(result_data["grid"], datatype=XSD.positiveInteger)))
+    f1_graph.add((individual, grid_dp, Literal(result_data["grid"], datatype=XSD.nonNegativeInteger)))
     f1_graph.add((individual, lapsCompleted_dp, Literal(result_data["laps"], datatype=XSD.nonNegativeInteger)))
     f1_graph.add((URIRef(f"{ONTOLOGY_IRI}#grand_prix_{grand_prix_name}"), hasGrandPrixResult_op, individual))
     driver = URIRef(f"{ONTOLOGY_IRI}#driver_{driver_data['name'].replace(' ', '_').lower()}"
@@ -338,7 +339,8 @@ def add_race_result_individual(individual_id, result_data, grand_prix_name, driv
 def add_qualifying_result_individual(individual_id, result_data, grand_prix_name, driver_data):
     individual = URIRef(f"{ONTOLOGY_IRI}#{individual_id}")
     f1_graph.add((individual, RDF.type, qualifying_result_class))
-    f1_graph.add((individual, driverNumber_dp, Literal(result_data["number"], datatype=XSD.positiveInteger)))
+    if "number" in result_data and result_data["number"].strip():
+        f1_graph.add((individual, driverNumber_dp, Literal(result_data["number"], datatype=XSD.nonNegativeInteger)))
     f1_graph.add((individual, driverPosition_dp, Literal(result_data["position"], datatype=XSD.positiveInteger)))
     if "Q1" in result_data and result_data["Q1"].strip():
         f1_graph.add((individual, Q1Time_dp, Literal(result_data["Q1"], datatype=XSD.string)))

@@ -341,7 +341,7 @@ f1:driverCode rdf:type owl:DatatypeProperty ,
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#driverNumber
 f1:driverNumber rdf:type owl:DatatypeProperty ;
                 rdfs:domain f1:GrandPrixResult ;
-                rdfs:range xsd:positiveInteger .
+                rdfs:range xsd:nonNegativeInteger .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#driverPosition
@@ -402,7 +402,7 @@ f1:grandPrixName rdf:type owl:DatatypeProperty ;
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#grid
 f1:grid rdf:type owl:DatatypeProperty ;
         rdfs:domain f1:RaceResult ;
-        rdfs:range xsd:positiveInteger .
+        rdfs:range xsd:nonNegativeInteger .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#imDbRating
@@ -465,7 +465,7 @@ f1:permanentNumber rdf:type owl:DatatypeProperty ,
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#points
 f1:points rdf:type owl:DatatypeProperty ;
           rdfs:domain f1:RaceResult ;
-          rdfs:range xsd:nonNegativeInteger .
+          rdfs:range xsd:double .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#raceTime
@@ -532,7 +532,7 @@ f1:totalLaps rdf:type owl:DatatypeProperty ;
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#totalPoints
 f1:totalPoints rdf:type owl:DatatypeProperty ;
                rdfs:domain f1:SeasonResult ;
-               rdfs:range xsd:nonNegativeInteger .
+               rdfs:range xsd:double .
 
 
 ###  https://github.com/RogoGit/F1-knowledge-base/f1-ontology#totalPosition
